@@ -1,0 +1,40 @@
+# Runs the whole stack (app + database) with one command: docker compose up
+#
+# What each part does:
+# - `db`: Postgres itself, with a named volume so data survives restarts
+# - `app`: your FastAPI app, built from the Dockerfile in this folder
+# - `depends_on`: makes sure Postgres starts before the app tries to connect
+
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: flyrank_tasks
+    ports:
+      - "5432:5432"
+    volumes:
+      - flyrank_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql+psycopg://postgres:postgres@db:5432/flyrank_tasks
+    depends_on:
+      db:
+        condition: service_healthy
+
+# Named volume = data lives outside the container's own filesystem.
+# This is WHY data survives even if you delete and recreate the container.
+volumes:
+  flyrank_pgdata:
