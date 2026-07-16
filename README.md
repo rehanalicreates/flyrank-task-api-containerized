@@ -1,4 +1,4 @@
-# FlyRank Task API — Containerize Your Stack (BE-04)
+# FlyRank Task API — Containerize Your Stack
 
 Week 2 assignment for the **Backend AI Engineering** track at FlyRank.
 
