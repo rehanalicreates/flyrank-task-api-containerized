@@ -112,7 +112,7 @@ curl -i http://localhost:8000/tasks/9999
 
 Open http://127.0.0.1:8000/docs after starting the server to interact with the API visually.
 
-![Swagger UI screenshot](screenshot.png)
+![Swagger UI screenshot](Screenshot.png)
 
 ## Proving persistence
 
