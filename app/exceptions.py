@@ -18,9 +18,4 @@ class TaskNotFoundError(Exception):
         super().__init__(f"Task with id {task_id} was not found.")
 
 
-class ValidationError(Exception):
-    """Raised for domain-level validation failures not covered by Pydantic."""
 
-    def __init__(self, message: str):
-        self.message = message
-        super().__init__(message)

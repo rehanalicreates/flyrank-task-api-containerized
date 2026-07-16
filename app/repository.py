@@ -14,6 +14,8 @@ pattern: swapping storage is a one-file change.
 
 from datetime import datetime, timezone
 
+from sqlalchemy import select
+
 from app.database import SessionLocal, TaskORM
 from app.exceptions import TaskNotFoundError
 from app.models import TaskCreate, TaskUpdate
@@ -34,7 +36,7 @@ class TaskRepository:
 
     def list_all(self) -> list[TaskORM]:
         with SessionLocal() as session:
-            return session.query(TaskORM).order_by(TaskORM.id).all()
+            return session.scalars(select(TaskORM).order_by(TaskORM.id)).all()
 
     def get(self, task_id: int) -> TaskORM:
         with SessionLocal() as session:
