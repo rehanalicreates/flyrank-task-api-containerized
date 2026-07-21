@@ -22,6 +22,13 @@ from app.models import TaskCreate, TaskUpdate
 
 
 class TaskRepository:
+    def seed(self) -> None:
+        with SessionLocal() as session:
+            if session.query(TaskORM).count() == 0:
+                for title in ["Buy groceries", "Finish report", "Review PR"]:
+                    session.add(TaskORM(title=title))
+                session.commit()
+
     def create(self, data: TaskCreate) -> TaskORM:
         with SessionLocal() as session:
             task = TaskORM(
@@ -69,6 +76,12 @@ class TaskRepository:
             if task is None:
                 raise TaskNotFoundError(task_id)
             session.delete(task)
+            session.commit()
+
+
+    def clear(self) -> None:
+        with SessionLocal() as session:
+            session.query(TaskORM).delete()
             session.commit()
 
 

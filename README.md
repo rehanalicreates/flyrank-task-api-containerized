@@ -147,6 +147,15 @@ curl -s http://localhost:8000/tasks | jq .
 
 This works because Postgres data lives in a named Docker volume (`flyrank_pgdata`), not inside the container's own filesystem.
 
+## Database
+
+- Engine: **PostgreSQL 16** running in Docker
+- Connection: via `DATABASE_URL` from `.env` (gitignored; `.env.example` committed)
+- Volume: `flyrank_pgdata` — data survives `docker compose down` and `up`
+- Auto-setup: table created on first start, 3 sample tasks seeded only when empty
+
+![Database data in psql](screenshot_db.png)
+
 ## Tests
 
 ```bash

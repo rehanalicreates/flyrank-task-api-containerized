@@ -28,8 +28,9 @@ from app.repository import task_repository
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """Create the `tasks` table if it doesn't exist yet. Only new addition vs. Week 1."""
+    """Create the `tasks` table if missing, then seed 3 example tasks on first run."""
     init_db()
+    task_repository.seed()
     yield
 
 

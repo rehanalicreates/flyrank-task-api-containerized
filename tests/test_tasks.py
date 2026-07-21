@@ -16,17 +16,16 @@ Run with:
 import pytest
 from fastapi.testclient import TestClient
 
-from app.database import SessionLocal, TaskORM, init_db
+from app.database import init_db
 from app.main import app
+from app.repository import task_repository
 
 
 @pytest.fixture(autouse=True)
 def reset_repository():
     """Ensure each test starts with a clean, empty tasks table."""
-    init_db()  # make sure the table exists
-    with SessionLocal() as session:
-        session.query(TaskORM).delete()
-        session.commit()
+    init_db()
+    task_repository.clear()
     yield
 
 
